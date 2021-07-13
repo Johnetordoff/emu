@@ -82,7 +82,7 @@ class OSFOauthView(generic.TemplateView):
     def get(self, request):
         return redirect(
             f"{OSF_CAS_URL}oauth2/authorize/?client_id={OSF_OAUTH_CLIENT_ID}"
-            f"&redirect_uri={OSF_REDIRECT_URI}"
+            f"&redirect_uri={OSF_REDIRECT_URI}callback/"
             f"&scope=osf.full_write"
             f"&response_type=code"
         )
@@ -95,4 +95,4 @@ class OSFOauthCallbackView(generic.View):
         user = User.from_osf_login(code)
         user.save()
         login(request, user)
-        return redirect(reverse("schema_editor"))
+        return redirect(reverse("home"))
