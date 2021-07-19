@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name="block",
-            name="csv",
+            name="csv_uploads",
         ),
         migrations.AlterField(
             model_name="schema",
-            name="csv",
-            field=models.FileField(null=True, upload_to="csv/"),
+            name="csv_uploads",
+            field=models.FileField(null=True, upload_to="csv_uploads/"),
         ),
     ]

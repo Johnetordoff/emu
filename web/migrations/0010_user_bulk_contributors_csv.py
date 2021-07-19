@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             model_name="user",
             name="bulk_contributors_csv",
             field=models.FileField(
-                blank=True, null=True, upload_to="csv/bulk_contributors/"
+                blank=True, null=True, upload_to="csv_uploads/bulk_contributors/"
             ),
         ),
     ]

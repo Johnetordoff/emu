@@ -1,3 +1,5 @@
+csv_uploads/
 *.pyc
 .idea/
 local.py
+/csv_uploads/

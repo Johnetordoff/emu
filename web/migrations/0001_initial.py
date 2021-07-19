@@ -152,7 +152,7 @@ class Migration(migrations.Migration):
                     "description",
                     models.CharField(blank=True, max_length=5000, null=True),
                 ),
-                ("csv", models.FileField(blank=True, null=True, upload_to="")),
+                ("csv_uploads", models.FileField(blank=True, null=True, upload_to="")),
                 (
                     "user",
                     models.ForeignKey(

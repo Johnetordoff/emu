@@ -16,12 +16,12 @@ class User(AbstractUser):
     code = models.CharField(null=True, blank=True, max_length=500)
     admin = models.BooleanField(null=True, blank=True)
     bulk_contributors_csv = models.FileField(
-        null=True, blank=True, upload_to="csv/bulk_contributors/"
+        null=True, blank=True, upload_to="csv_uploads/bulk_contributors/"
     )
 
     def refresh_token(self):
         query_params = {
-            "redirect_uri": f'{settings.OSF_REDIRECT_URI}callback/',
+            "redirect_uri": f"{settings.OSF_REDIRECT_URI}callback/",
             "client_id": OSF_OAUTH_CLIENT_ID,
             "client_secret": OSF_OAUTH_SECRET_KEY,
             "grant_type": "refresh_token",
@@ -39,11 +39,10 @@ class User(AbstractUser):
         )
         self.save()
 
-
     @classmethod
     def from_osf_login(cls, code):
         query_params = {
-            "redirect_uri": f'{settings.OSF_REDIRECT_URI}callback/',
+            "redirect_uri": f"{settings.OSF_REDIRECT_URI}callback/",
             "client_id": OSF_OAUTH_CLIENT_ID,
             "client_secret": OSF_OAUTH_SECRET_KEY,
             "grant_type": "authorization_code",
@@ -77,7 +76,7 @@ class Schema(models.Model):
     name = models.CharField(max_length=500, blank=True, null=True)
     version = models.PositiveIntegerField()
     description = models.CharField(max_length=5000, blank=True, null=True)
-    csv = models.FileField(null=True, upload_to="csv/")
+    csv = models.FileField(null=True, upload_to="csv_uploads/")
 
     user = models.ForeignKey(
         "web.User", on_delete=models.SET_NULL, null=True, related_name="schemas"

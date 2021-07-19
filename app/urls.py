@@ -16,13 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from web.views.index_views import (
     index,
-    SignupView,
     OSFOauthCallbackView,
     OSFOauthView,
-    SimpleSchemaJSONView,
-    SchemaJSONView,
-    ImportView,
-    BlockEditorView,
 )
 
 from web.views.schema_editor import (
@@ -33,6 +28,10 @@ from web.views.schema_editor import (
     SchemaEditorView,
     BlockDeleteView,
     BlockUpdateView,
+    SimpleSchemaJSONView,
+    SchemaJSONView,
+    ImportView,
+    BlockEditorView,
 )
 from web.views.bulk_upload_contributors import BulkUploadContributors
 from django.conf.urls import url, include
@@ -43,7 +42,6 @@ urlpatterns = [
     url(r"^$", index, name="home"),
     url("^", include("django.contrib.auth.urls")),
     url(r"^admin/", admin.site.urls, name="admin_app"),
-    url(r"^sign_up/$", SignupView.as_view(), name="sign_up"),
     url(r"^osf_oauth/$", OSFOauthView.as_view(), name="osf_oauth"),
     url(r"^callback/$", OSFOauthCallbackView.as_view(), name="callback"),
     url(r"^(?P<schema_id>\w+)/json/$", SchemaJSONView.as_view(), name="schema_json"),

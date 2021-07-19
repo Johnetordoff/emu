@@ -36,11 +36,11 @@ class BulkUploadContributors(
         import asyncio
 
         url = f"{settings.OSF_API_URL}v2/users/{user.guid}/nodes/?fields[nodes]=title&page[size]=100"
-        user.refresh_token()
+        # user.refresh_token()
 
         data = asyncio.run(get_paginated_data(user.token, url))
         choices = []
-        for node in data['data']:
+        for node in data["data"]:
             choice = (node["id"], f'{node["attributes"]["title"]} ({node["id"]})')
             choices.append(choice)
 
@@ -105,13 +105,15 @@ class BulkUploadContributors(
                 headers={"Authorization": f"Bearer {user.token}"},
             )
             if resp.status_code == 401:
-                user.refresh_token()
-                resp = self.send_payload((payload, send_email), node_id, user)
+                pass
+                # user.refresh_token()
+                # resp = self.send_payload((payload, send_email), node_id, user)
             if resp.status_code == 400:
                 data = resp.json()
                 errors = data["errors"]
                 for error in errors:
                     messages.add_message(self.request, messages.ERROR, error["detail"])
             if resp.status_code == 200:
-                messages.add_message(self.request, messages.ERROR, f'User added to {node_id}')
-            return resp
+                messages.add_message(
+                    self.request, messages.ERROR, f"User added to {node_id}"
+                )

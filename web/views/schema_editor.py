@@ -7,6 +7,7 @@ from web.forms.schema_editor import SchemaForm, BlockForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from app import settings
+from django.http.response import JsonResponse
 
 
 class SchemaCreateView(LoginRequiredMixin, CreateView):
@@ -25,6 +26,52 @@ class SchemaCreateView(LoginRequiredMixin, CreateView):
         return redirect(reverse("schema_editor"))
 
 
+class BlockEditorView(generic.TemplateView, generic.FormView):
+    template_name = "schema_editor/block_editor.html"
+    form_class = BlockForm
+
+    def get_context_data(self, *args, **kwargs):
+        schema = Schema.objects.get(id=self.kwargs["schema_id"])
+
+        form = SchemaForm(self.request.GET, self.request.FILES)
+
+        return {
+            "schema": schema,
+            "blocks": Block.objects.filter(
+                schema__user=self.request.user, schema_id=self.kwargs["schema_id"]
+            ).order_by("index"),
+            "block_types": [block_type[0] for block_type in Block.SCHEMABLOCKS],
+        }
+
+    def get_success_url(self):
+        return reverse(
+            "block_editor",
+            kwargs={"schema_id": Block.get(id=self.kwargs["block"]).schema.id},
+        )
+
+
+class SchemaJSONView(generic.View):
+    def get(self, request, schema_id):
+        return JsonResponse(Schema.objects.get(id=schema_id).to_json)
+
+
+class SimpleSchemaJSONView(generic.View):
+    def get(self, request, schema_id):
+        return JsonResponse(Schema.objects.get(id=schema_id).to_atomic_schema)
+
+
+class ImportView(generic.View):
+    def get(self, request, schema_id):
+        schema = Schema.objects.get(id=schema_id)
+        with open(schema.csv.read(), "r") as csvfile:
+            data = csvfile.read()
+            raise Exception(csvfile.read())
+            data = csv.reader(csvfile.read(), delimiter=",")
+            Question.objects.create(**data)
+
+        return JsonResponse(Schema.objects.get(id=schema_id).to_atomic_schema)
+
+
 class SchemaUpdateView(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = "schema_id"
 
@@ -36,7 +83,7 @@ class SchemaUpdateView(LoginRequiredMixin, UpdateView):
             Schema.objects.filter(id=self.kwargs["schema_id"]).update(
                 **form.cleaned_data
             )
-            csv = request.FILES.get("csv")
+            csv = request.FILES.get("csv_uploads")
             schema = Schema.objects.get(id=self.kwargs["schema_id"])
             schema.csv = csv
             schema.save()
