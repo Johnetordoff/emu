@@ -1,12 +1,10 @@
-import requests
 from django.views.generic.edit import CreateView, DeleteView, UpdateView, FormView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from web.models.user import Schema, Block
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import reverse, redirect
 from web.forms.schema_editor import SchemaForm, BlockForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from app import settings
 from django.http.response import JsonResponse
 
 
@@ -26,7 +24,7 @@ class SchemaCreateView(LoginRequiredMixin, CreateView):
         return redirect(reverse("schema_editor"))
 
 
-class BlockEditorView(generic.TemplateView, generic.FormView):
+class BlockEditorView(TemplateView, FormView):
     template_name = "schema_editor/block_editor.html"
     form_class = BlockForm
 
@@ -50,17 +48,17 @@ class BlockEditorView(generic.TemplateView, generic.FormView):
         )
 
 
-class SchemaJSONView(generic.View):
+class SchemaJSONView(View):
     def get(self, request, schema_id):
         return JsonResponse(Schema.objects.get(id=schema_id).to_json)
 
 
-class SimpleSchemaJSONView(generic.View):
+class SimpleSchemaJSONView(View):
     def get(self, request, schema_id):
         return JsonResponse(Schema.objects.get(id=schema_id).to_atomic_schema)
 
 
-class ImportView(generic.View):
+class ImportView(View):
     def get(self, request, schema_id):
         schema = Schema.objects.get(id=schema_id)
         with open(schema.csv.read(), "r") as csvfile:

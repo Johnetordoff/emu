@@ -3,3 +3,4 @@ csv_uploads/
 .idea/
 local.py
 /csv_uploads/
+.secrets.env

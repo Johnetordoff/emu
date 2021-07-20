@@ -1,8 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from django.views import generic
-from web.forms.forms import SignupForm
 from web.models.user import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from my_secrets.secrets import OSF_OAUTH_CLIENT_ID
 from app.settings import OSF_REDIRECT_URI, OSF_CAS_URL
 

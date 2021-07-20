@@ -50,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "app.urls"
@@ -148,9 +149,9 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 
-OSF_REDIRECT_URI = "https://emu.ngrok.io/"
-OSF_CAS_URL = "https://accounts.staging.osf.io/"
-OSF_API_URL = "https://api.staging.osf.io/"
+OSF_REDIRECT_URI = os.getenv('OSF_REDIRECT_URI') # the domain index
+OSF_CAS_URL = os.getenv('OSF_CAS_URL') # "https://accounts.staging.osf.io/"
+OSF_API_URL = os.getenv('OSF_API_URL') # "https://api.staging.osf.io/"
 
 
 STATICFILES_FINDERS = [
@@ -158,4 +159,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
+STATIC_ROOT = 'static/'
+
 AUTH_USER_MODEL = "web.User"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
