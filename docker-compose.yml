@@ -44,4 +44,4 @@
         DJANGO_SETTINGS_MODULE: api.base.settings
       volumes:
         - ./:/code:cached
-        - python_requirements_vol:/python3.9
+        - python_requirements_vol:/usr/local/lib/python3.9
