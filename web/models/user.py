@@ -25,7 +25,6 @@ class User(AbstractUser):
             "client_id": OSF_OAUTH_CLIENT_ID,
             "client_secret": OSF_OAUTH_SECRET_KEY,
             "grant_type": "refresh_token",
-            "code": self.code,
         }
         query_params = urllib.parse.urlencode(query_params)
         url = f"{settings.OSF_CAS_URL}oauth2/token?"

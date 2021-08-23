@@ -34,12 +34,40 @@ class BlockEditorView(TemplateView, FormView):
         form = SchemaForm(self.request.GET, self.request.FILES)
 
         return {
+            "form": form,
             "schema": schema,
             "blocks": Block.objects.filter(
                 schema__user=self.request.user, schema_id=self.kwargs["schema_id"]
             ).order_by("index"),
             "block_types": [block_type[0] for block_type in Block.SCHEMABLOCKS],
         }
+
+    def post(self, request, *args, **kwargs):
+        form = SchemaForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv = form.files['csv']
+            user = request.user
+            user.csv = csv
+            user.save()
+            if csv:
+                self.read_csv(csv, request)
+        else:
+            raise Exception(form.__dict__)
+        return redirect(
+            reverse("block_editor", kwargs={"schema_id": self.kwargs["schema_id"]})
+        )
+
+    def read_csv(self, file, request):
+        import csv
+        import codecs
+        for row in csv.DictReader(codecs.iterdecode(file.file, 'utf-8'), delimiter=","):
+            row['required'] = True if row.pop('required') == 'TRUE' else False
+            block = Block(**row)
+            block.schema_id = self.kwargs["schema_id"]
+            block.user = request.user
+            block.save()
+            block.index = block.schema.blocks.count() + 1
+            block.save()
 
     def get_success_url(self):
         return reverse(
@@ -59,6 +87,18 @@ class SimpleSchemaJSONView(View):
 
 
 class ImportView(View):
+    def get(self, request, schema_id):
+        schema = Schema.objects.get(id=schema_id)
+        with open(schema.csv.read(), "r") as csvfile:
+            data = csvfile.read()
+            raise Exception(csvfile.read())
+            data = csv.reader(csvfile.read(), delimiter=",")
+            Question.objects.create(**data)
+
+        return JsonResponse(Schema.objects.get(id=schema_id).to_atomic_schema)
+
+
+class UploadView(View):
     def get(self, request, schema_id):
         schema = Schema.objects.get(id=schema_id)
         with open(schema.csv.read(), "r") as csvfile:
@@ -95,10 +135,10 @@ class SchemaUpdateView(LoginRequiredMixin, UpdateView):
 
     def read_csv(self, file):
         import csv
-
         with open(file.name, "r") as fp:
             spamreader = csv.reader(fp, delimiter=",")
             for row in spamreader:
+                print(row)
                 data = row[0]
 
 
@@ -126,7 +166,6 @@ class BlockCreateView(LoginRequiredMixin, CreateView):
         return redirect(
             reverse("block_editor", kwargs={"schema_id": self.kwargs["schema_id"]})
         )
-
 
 class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
     model = Block

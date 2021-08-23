@@ -7,7 +7,16 @@
             <div class="panel panel-default">
                 <div class="panel panel-heading">
                     <h2>{{ schema.name }}  v{{ schema.version }}</h2>
-                    <a href="{% url 'atomic_schema' schema_id=schema.id %}">View Schema</a>
+                    <a href="{% url 'atomic_schema' schema_id=schema.id %}">View Schema</a>|
+                    <form method="POST" enctype="multipart/form-data"  action="{% url 'block_editor' schema_id=schema.id %}" >
+                        {% csrf_token %}
+                         <div class="form-group col-md-5">
+                            <label for="csv">Schema CSV</label>
+                            <input type="file" class="form-control" id="csv" name="csv" aria-describedby="csv" value="{{schema.csv}}">
+                         </div>
+                          <button type="submit" class="btn btn-primary form-control  col-md-2">Import CSV</button>
+
+                    </form>
                 </div>
                 <div class="panel panel-body">
                     <form  enctype="multipart/form-data" class="form-inline" method="post" action="{% url 'schema-update' schema_id=schema.id %}">

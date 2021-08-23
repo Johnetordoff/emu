@@ -31,6 +31,7 @@ from web.views.schema_editor import (
     SimpleSchemaJSONView,
     SchemaJSONView,
     ImportView,
+    UploadView,
     BlockEditorView,
 )
 from web.views.bulk_upload_contributors import BulkUploadContributors
@@ -50,7 +51,7 @@ urlpatterns = [
         SimpleSchemaJSONView.as_view(),
         name="atomic_schema",
     ),
-    url(r"^'schema/(?P<schema_id>\w+)/import/$", ImportView.as_view(), name="import"),
+    url(r"^'schema/(?P<schema_id>\w+)/upload/$", UploadView.as_view(), name="upload"),
     url(r"^schema_editor/", SchemaEditorView.as_view(), name="schema_editor"),
     path("schema/<int:schema_id>/", SchemaUpdateView.as_view(), name="schema-update"),
     path("schema/add/", SchemaCreateView.as_view(), name="schema_add"),

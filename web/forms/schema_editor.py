@@ -38,6 +38,7 @@ class BlockForm(ModelForm):
         help_text="Not sure what this does.",
     )
     index = forms.IntegerField(required=False)
+    csv = forms.FileField(widget=forms.ClearableFileInput(), required=False)
 
     class Meta:
         model = Block
@@ -49,4 +50,5 @@ class BlockForm(ModelForm):
             "block_type",
             "required",
             "index",
+            "csv"
         ]
