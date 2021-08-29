@@ -3,10 +3,9 @@
 # Register your models here.
 
 from django.contrib import admin
-from web.models.user import Block, Schema
+from web.models import Block, Schema
 from django import forms
 from django.utils.html import format_html
-from django.db import models
 
 
 class AdminSchema(admin.ModelAdmin):

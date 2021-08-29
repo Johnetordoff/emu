@@ -4,7 +4,6 @@ from web.forms.forms import BulkUploadContributorsForm
 from web.utils import get_paginated_data
 import csv
 from app import settings
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 import requests

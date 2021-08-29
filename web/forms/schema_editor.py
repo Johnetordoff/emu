@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from web.models.user import Schema, Block
+from web.models import Schema, Block
 from django import forms
 
 
@@ -50,5 +50,5 @@ class BlockForm(ModelForm):
             "block_type",
             "required",
             "index",
-            "csv"
+            "csv",
         ]

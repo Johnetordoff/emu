@@ -41,7 +41,6 @@ async def get_paginated_data(token, url, page_range=None):
             task = get_pages(token, url, i, result)
             tasks.append(task)
 
-        print(tasks)
         await asyncio.gather(*tasks)
         pages_as_list = []
         # through the magic of async all our pages have loaded.

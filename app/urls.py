@@ -20,7 +20,7 @@ from web.views.index_views import (
     OSFOauthView,
 )
 
-from web.views.schema_editor import (
+from web.views.schema_editor.schema_editor import (
     SchemaCreateView,
     SchemaDeleteView,
     SchemaUpdateView,
@@ -30,11 +30,12 @@ from web.views.schema_editor import (
     BlockUpdateView,
     SimpleSchemaJSONView,
     SchemaJSONView,
-    ImportView,
-    UploadView,
     BlockEditorView,
+    CSVtoSchemaView
 )
-from web.views.bulk_upload_contributors import BulkUploadContributors
+from web.views.bulk_upload_contrbutors.bulk_upload_contributors import (
+    BulkUploadContributors,
+)
 from django.conf.urls import url, include
 from django.urls import path
 
@@ -51,7 +52,6 @@ urlpatterns = [
         SimpleSchemaJSONView.as_view(),
         name="atomic_schema",
     ),
-    url(r"^'schema/(?P<schema_id>\w+)/upload/$", UploadView.as_view(), name="upload"),
     url(r"^schema_editor/", SchemaEditorView.as_view(), name="schema_editor"),
     path("schema/<int:schema_id>/", SchemaUpdateView.as_view(), name="schema-update"),
     path("schema/add/", SchemaCreateView.as_view(), name="schema_add"),
@@ -64,6 +64,11 @@ urlpatterns = [
         "schema/<int:schema_id>/block_editor/",
         BlockEditorView.as_view(),
         name="block_editor",
+    ),
+    path(
+        "schema/csv_to_schema/",
+        CSVtoSchemaView.as_view(),
+        name="csv_to_schema",
     ),
     path(
         "schema/<int:schema_id>/blocks/<int:block_id>/",

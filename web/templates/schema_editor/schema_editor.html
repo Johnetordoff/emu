@@ -23,6 +23,17 @@
                 </ul>
             </div>
         {% endif %}
+        <div class="panel-body">
+            <form method="POST" enctype="multipart/form-data"  action="{% url 'csv_to_schema' %}" >
+                {% csrf_token %}
+                <div class="form-group col-md-5">
+                    <label for="csv">Select CSV To Import as schema</label>
+                    <input type="file" class="form-control" id="csv" name="csv" aria-describedby="csv" value="{{schema.csv}}">
+                    <a href="https://mfr.osf.io/render?url=https://osf.io/wzu2c/?action=download">Example Spreadsheet</a>
+                </div>
+                <button type="submit" class="btn btn-primary form-control  col-md-2">Import CSV</button>
+            </form>
+        </div>
         <div class="panel-footer">
             <form action="{% url 'schema_add' %}" method="post">
                 {% csrf_token %}
@@ -38,5 +49,7 @@
                 <button type="submit" class="btn btn-success btn-block">Create New Schema</button>
             </form>
         </div>
+
+
     </div>
 {% endblock %}
