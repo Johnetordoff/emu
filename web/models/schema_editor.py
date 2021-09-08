@@ -138,13 +138,19 @@ class Block(models.Model):
 
     @property
     def to_atomic_schema_block(self):
-        return {
-            "help_text": self.help_text or "",
-            "block_type": self.block_type,
-            "display_text": self.display_text or "",
-            "example_text": self.example_text or "",
-            "required": bool(self.required),
-        }
+        data = {"block_type": self.block_type}
+        if self.help_text:
+            data['help_text'] = self.help_text
+
+        if self.display_text:
+            data['display_text'] = self.display_text
+
+        if self.example_text:
+            data['example_text'] = self.example_text
+        if self.required:
+            data['required'] = self.required
+
+        return data
 
     @property
     def to_block(self):
