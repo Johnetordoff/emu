@@ -9,7 +9,8 @@ from web.forms.schema_editor import SchemaForm, BlockForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http.response import JsonResponse
-
+from django.contrib import messages
+from django.db.utils import IntegrityError
 
 class SchemaCreateView(LoginRequiredMixin, CreateView):
     model = Schema
@@ -189,6 +190,33 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
             "schema_id": self.kwargs["schema_id"],
             "form": form,
         }
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+
+        try:
+            self.object = form.save()
+        except IntegrityError as e:
+            print('duplicate key value violates unique constraint' in e.args[0])
+            print('duplicate key value violates unique constraint' in e.args[0])
+            if 'duplicate key value violates unique constraint' in e.args[0]:
+                blocking_block = Block.objects.get(index=self.object.index, schema_id=self.kwargs['schema_id'])
+                url = reverse("block-update", kwargs={
+                    "schema_id": self.kwargs["schema_id"],
+                    "block_id": blocking_block.id
+                })
+                messages.add_message(self.request, messages.ERROR, f'Index `{self.object.index}'
+                                                                   f' already used by <a href={url}>{blocking_block}</a>',
+                                     extra_tags='safe')
+                return redirect(
+                    reverse("block-update", kwargs={
+                        "schema_id": self.kwargs["schema_id"],
+                        "block_id": self.kwargs["block_id"]
+                    })
+                )
+
+        return super().form_valid(form)
+
 
     def get_success_url(self):
         return reverse("block_editor", kwargs={"schema_id": self.kwargs["schema_id"]})
