@@ -150,6 +150,7 @@ class BlockCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = BlockForm(request.POST)
         if form.is_valid():
+            form.cleaned_data.pop('csv')
             block = Block(**form.cleaned_data)
             block.schema_id = self.kwargs["schema_id"]
             block.user = request.user
