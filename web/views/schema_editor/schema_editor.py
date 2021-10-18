@@ -11,6 +11,8 @@ from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from django.contrib import messages
 from django.db.utils import IntegrityError
+from django.forms.fields import HiddenInput
+
 
 class SchemaCreateView(LoginRequiredMixin, CreateView):
     model = Schema
@@ -184,6 +186,7 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
         )
         form.display_text = self.get_object().display_text
         form.block_type = self.get_object().block_type
+        form.fields['csv'].widget = HiddenInput()
 
         return {
             "block_id": self.kwargs["block_id"],
@@ -197,8 +200,6 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
         try:
             self.object = form.save()
         except IntegrityError as e:
-            print('duplicate key value violates unique constraint' in e.args[0])
-            print('duplicate key value violates unique constraint' in e.args[0])
             if 'duplicate key value violates unique constraint' in e.args[0]:
                 blocking_block = Block.objects.get(index=self.object.index, schema_id=self.kwargs['schema_id'])
                 url = reverse("block-update", kwargs={
