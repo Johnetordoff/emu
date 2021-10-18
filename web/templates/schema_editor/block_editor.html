@@ -28,7 +28,7 @@
                         {% for block in blocks %}
                             <a href="{% url 'block-update' block_id=block.id schema_id=schema.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h2 class="mb-1">{{ block.block_type }}</h2>
+                                    <h1  class="mb-1"># {{ forloop.counter }} | {{ block.block_type }}</h1>
                                     <small>required: {{ block.required }}</small>
                                     <br>
                                     <b>{{ block.display_text }} </b>
