@@ -47,7 +47,10 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
             user.csv = csv
             user.save()
             if csv:
-                schema = self.read_csv(csv, request)
+                try:
+                    schema = self.read_csv(csv, request)
+                except:
+                    raise Va
 
         return redirect(
             reverse("block_editor", kwargs={"schema_id": schema.id })
@@ -61,6 +64,7 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
 
         for row in csv.DictReader(codecs.iterdecode(file.file, "utf-8"), delimiter=","):
             row["required"] = True if row.pop("required") == "TRUE" else False
+            row.pop('')  # empty columns
             block = Block(**row)
             block.schema_id = schema.id
             block.user = request.user
@@ -89,6 +93,18 @@ class BlockEditorView(TemplateView, FormView):
             "block_types": [block_type[0] for block_type in Block.SCHEMABLOCKS],
         }
 
+    def post(self, request, schema_id):
+        import json
+        data = json.loads(request.body.decode())
+        index_lst = data.get('data', {}).get('index')
+        Block.objects.filter(schema_id=schema_id).update(index=None)
+        if index_lst:
+            for index, id in enumerate(index_lst):
+                print(Block.objects.filter(id=id), index)
+                print(Block.objects.filter(id=id), index)
+                Block.objects.filter(id=id).update(index=index)
+
+        return super(BlockEditorView, self).post(self, request, schema_id)
 
     def get_success_url(self):
         return reverse(
@@ -187,6 +203,7 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
         form.display_text = self.get_object().display_text
         form.block_type = self.get_object().block_type
         form.fields['csv'].widget = HiddenInput()
+        form.fields['index'].widget = HiddenInput()
 
         return {
             "block_id": self.kwargs["block_id"],
@@ -217,7 +234,6 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
                 )
 
         return super().form_valid(form)
-
 
     def get_success_url(self):
         return reverse("block_editor", kwargs={"schema_id": self.kwargs["schema_id"]})

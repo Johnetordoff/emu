@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+
+<script src="{% static 'js/Sortable.js' %}"></script>
+<script src="{% static 'js/sort.js' %}"></script>
 
 {% block content %}
     <h2>Block Editor</h2>
@@ -24,20 +28,26 @@
                     </form>
                 </div>
                 <div class="panel-body">
-                    <ul class="list-group">
+                    <ul id="sortable-blocks" class="list-group">
+                        {% csrf_token %}
+
                         {% for block in blocks %}
-                            <a href="{% url 'block-update' block_id=block.id schema_id=schema.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h1  class="mb-1"># {{ forloop.counter }} | {{ block.block_type }}</h1>
-                                    <small>required: {{ block.required }}</small>
-                                    <br>
-                                    <b>{{ block.display_text }} </b>
-                                    <form  action="{% url 'block-delete' block_id=block.id schema_id=schema.id %}" method="post">
-                                        {% csrf_token %}
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                </div>
-                            </a>
+                            <li style="color: white;" data-id="{{block.id}}">
+                                <a href="{% url 'block-update' block_id=block.id schema_id=schema.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h1  class="mb-1">{{ block.block_type }}</h1>
+                                        <small>required: {{ block.required }}</small>
+                                        <br>
+                                        <h4>{{ block.display_text }} </h4>
+                                        <h4>{{ block.example_text }} </h4>
+                                        <h4>{{ block.help_text }} </h4>
+                                        <form  action="{% url 'block-delete' block_id=block.id schema_id=schema.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    </div>
+                                </a>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
