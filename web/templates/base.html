@@ -6,8 +6,6 @@
         <script src="{% static 'js/bootstrap.js' %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-        <script src="{% static 'js/Sortable.js' %}"></script>
-        <script src="{% static 'js/sort.js' %}"></script>
         <title>🐦 Emu</title>
    </head>
    <body>
@@ -56,6 +54,9 @@ a                </div>
                             </li>
                             <li>
                                 <a href="{% url 'schema_editor' %}">Schema Editor</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'spam_scan' %}">Spam Scan</a>
                             </li>
                             <li>
                                 <a href="{% url 'bulk_upload_contributors' %}">Bulk Upload Contributors</a>

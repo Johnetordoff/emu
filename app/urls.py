@@ -36,6 +36,8 @@ from web.views.schema_editor.schema_editor import (
 from web.views.bulk_upload_contrbutors.bulk_upload_contributors import (
     BulkUploadContributors,
 )
+
+from spam_scan.views import SpamScanView
 from django.conf.urls import url, include
 from django.urls import path
 
@@ -90,4 +92,6 @@ urlpatterns = [
         BulkUploadContributors.as_view(),
         name="bulk_upload_contributors",
     ),
+    url("^spam_scan/", SpamScanView.as_view(), name='spam_scan'),
+
 ]

@@ -1,3 +1,4 @@
+import json
 import csv
 import codecs
 
@@ -94,14 +95,11 @@ class BlockEditorView(TemplateView, FormView):
         }
 
     def post(self, request, schema_id):
-        import json
         data = json.loads(request.body.decode())
         index_lst = data.get('data', {}).get('index')
         Block.objects.filter(schema_id=schema_id).update(index=None)
         if index_lst:
             for index, id in enumerate(index_lst):
-                print(Block.objects.filter(id=id), index)
-                print(Block.objects.filter(id=id), index)
                 Block.objects.filter(id=id).update(index=index)
 
         return super(BlockEditorView, self).post(self, request, schema_id)

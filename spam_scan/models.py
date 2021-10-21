@@ -23,3 +23,10 @@ class SpamReport(models.Model):
     registration = models.ForeignKey(SpamRegistrationData, on_delete=models.CASCADE)
     notes = models.TextField(blank=True, null=True)
     score = models.PositiveIntegerField(blank=True, null=True)
+
+
+class UserProfileSpamReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_spam_data = models.ForeignKey(SpamUserData, on_delete=models.CASCADE)
+    notes = models.TextField(blank=True, null=True)
+    score = models.PositiveIntegerField(blank=True, null=True)
