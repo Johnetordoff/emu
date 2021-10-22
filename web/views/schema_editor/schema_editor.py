@@ -48,10 +48,7 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
             user.csv = csv
             user.save()
             if csv:
-                try:
-                    schema = self.read_csv(csv, request)
-                except:
-                    raise Va
+                schema = self.read_csv(csv, request)
 
         return redirect(
             reverse("block_editor", kwargs={"schema_id": schema.id })
@@ -65,7 +62,7 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
 
         for row in csv.DictReader(codecs.iterdecode(file.file, "utf-8"), delimiter=","):
             row["required"] = True if row.pop("required") == "TRUE" else False
-            row.pop('')  # empty columns
+            row.pop('', None)  # empty columns
             block = Block(**row)
             block.schema_id = schema.id
             block.user = request.user
@@ -88,8 +85,7 @@ class BlockEditorView(TemplateView, FormView):
         return {
             "form": form,
             "schema": schema,
-            "blocks": Block.objects.filter(
-                schema__user=self.request.user, schema_id=self.kwargs["schema_id"]
+            "blocks": Block.objects.filter(schema_id=self.kwargs["schema_id"]
             ).order_by("index"),
             "block_types": [block_type[0] for block_type in Block.SCHEMABLOCKS],
         }
