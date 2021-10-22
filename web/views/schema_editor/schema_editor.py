@@ -49,20 +49,21 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
             user.save()
             if csv:
                 try:
-                    schema = self.read_csv(csv, request)
+                    schema = Schema(name=csv.name, version=0, user=user)
+                    schema.save()
+                    schema = self.read_csv(schema, csv, request)
                 except AssertionError as e:
                     messages.add_message(self.request, messages.ERROR, str(e), extra_tags='safe')
-                return redirect(reverse("schema_editor"))
+                    schema.delete()
+                except UnicodeDecodeError as e:
+                    messages.add_message(self.request, messages.ERROR, 'Not a valid csv', extra_tags='safe')
+                    schema.delete()
 
-        schema.save()
-        return redirect(
-            reverse("block_editor", kwargs={"schema_id": schema.id })
-        )
+            return redirect(reverse("schema_editor"))
 
-    def read_csv(self, file, request):
+    def read_csv(self, schema, file, request):
         user = request.user
 
-        schema = Schema(name='Untitled', version=0, user=user)
 
         for row in csv.DictReader(codecs.iterdecode(file.file, "utf-8"), delimiter=","):
             try:
