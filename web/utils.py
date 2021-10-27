@@ -7,7 +7,8 @@ async def get_with_retry(token, url, headers=None):
     if not headers:
         headers = {}
 
-    headers["Authorization"] = f"Bearer {token}"
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     resp = requests.get(url, headers=headers)
     resp.raise_for_status()
     return resp.json()

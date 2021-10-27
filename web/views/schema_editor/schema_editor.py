@@ -7,6 +7,7 @@ from django.views.generic import TemplateView, View
 from web.models import Schema, Block
 from django.shortcuts import reverse, redirect
 from web.forms.schema_editor import SchemaForm, BlockForm
+from web.utils import get_paginated_data
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http.response import JsonResponse
@@ -62,8 +63,6 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
             return redirect(reverse("schema_editor"))
 
     def read_csv(self, schema, file, request):
-        user = request.user
-
 
         for row in csv.DictReader(codecs.iterdecode(file.file, "utf-8"), delimiter=","):
             try:
@@ -87,16 +86,22 @@ class BlockEditorView(TemplateView, FormView):
     form_class = BlockForm
 
     def get_context_data(self, *args, **kwargs):
+        import asyncio
         schema = Schema.objects.get(id=self.kwargs["schema_id"])
 
         form = SchemaForm(self.request.GET, self.request.FILES)
-
+        scheamas = {
+          'prod': asyncio.run(get_paginated_data(None, 'https://api.osf.io/v2/schemas/registrations/?page[size]=100&fields[registration-schemas]=name,schema_version')),
+          'staging': asyncio.run(get_paginated_data(None, 'https://api.staging.osf.io/v2/schemas/registrations/?page[size]=100&fields[registration-schemas]=name,schema_version')),
+          'staging2': asyncio.run(get_paginated_data(None, 'https://api.staging2.osf.io/v2/schemas/registrations/?page[size]=100&fields[registration-schemas]=name,schema_version'))
+        }
         return {
             "form": form,
             "schema": schema,
             "blocks": Block.objects.filter(schema_id=self.kwargs["schema_id"]
             ).order_by("index"),
             "block_types": [block_type[0] for block_type in Block.SCHEMABLOCKS],
+            "schemas": scheamas,
         }
 
     def post(self, request, schema_id):
@@ -257,6 +262,29 @@ class SchemaEditorView(LoginRequiredMixin, TemplateView, FormView):
 
     def get_context_data(self, *args, **kwargs):
         return {"schemas": Schema.objects.all()}
+
+    def get_success_url(self):
+        return reverse("schema_editor")
+
+
+class SchemaCompareView(LoginRequiredMixin, View):
+    template_name = "schema_editor/schema_editor.html"
+    form_class = SchemaForm
+    login_url = reverse_lazy("osf_oauth")
+
+    def post(self, request, schema_id):
+        data = json.loads(request.body.decode())
+        import asyncio
+
+        if data["env"] == 'prod':
+            compare_json = asyncio.run(get_paginated_data(None, f'http://api.osf.io/v2/schemas/registrations/{data["id"]}/schema_blocks'))
+        else:
+            compare_json = asyncio.run(get_paginated_data(None, f'http://api.{data["env"]}.osf.io/v2/schemas/registrations/{data["id"]}/schema_blocks'))
+
+        return JsonResponse({
+            'other_schema': compare_json,
+            'our_schema': Schema.objects.get(id=schema_id).to_atomic_schema
+        })
 
     def get_success_url(self):
         return reverse("schema_editor")

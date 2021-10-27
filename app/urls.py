@@ -31,7 +31,8 @@ from web.views.schema_editor.schema_editor import (
     SimpleSchemaJSONView,
     SchemaJSONView,
     BlockEditorView,
-    CSVtoSchemaView
+    CSVtoSchemaView,
+    SchemaCompareView
 )
 from web.views.bulk_upload_contrbutors.bulk_upload_contributors import (
     BulkUploadContributors,
@@ -92,6 +93,7 @@ urlpatterns = [
         BulkUploadContributors.as_view(),
         name="bulk_upload_contributors",
     ),
-    url("^spam_scan/", SpamScanView.as_view(), name='spam_scan'),
+    url(r"^spam_scan/$", SpamScanView.as_view(), name='spam_scan'),
+    path(r"schema/<int:schema_id>/compare/", SchemaCompareView.as_view(), name='compare'),
 
 ]
