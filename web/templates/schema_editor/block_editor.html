@@ -11,64 +11,77 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default" >
-                <div id="schema-info" class="panel panel-heading" value="{{schema.id}}" href="#collapse-editor" data-toggle="collapse" style="margin-bottom: 0px;">
+                <div id="schema-info" class="panel panel-heading" value="{{schema.id}}" href="#collapse-editor" data-toggle="collapse" style="margin-bottom: 0px; text-align: center;">
                     <h3 style="margin: 0px;">{{ schema.name }}  v{{ schema.version }}</h3>
                     <a href="{% url 'atomic_schema' schema_id=schema.id %}">View Schema</a>
                 </div>
-                <div id="collapse-editor" class="collaspe show">
-                    <div class="panel panel-body">
-                        <form  enctype="multipart/form-data" class="form-inline" method="post" action="{% url 'schema-update' schema_id=schema.id %}">
-                            {% csrf_token %}
-                             <div class="form-group col-md-5">
-                                <label for="name">Schema name</label>
-                                <input type="text" class="form-control" id="name" name="name" aria-describedby="name" value="{{schema.name}}" placeholder="Schema Name">
-                             </div>
-                             <div class="form-group col-md-5">
-                                <label for="version">Schema Version</label>
-                                <input type="number" class="form-control" id="version" name="version" aria-describedby="version" value="{{schema.version}}" placeholder="Schema Version">
-                             </div>
-                              <button type="submit" class="btn btn-primary form-control  col-md-2">Update</button>
-                        </form>
-                        <ul id="sortable-blocks" class="list-group">
-                            {% csrf_token %}
-                            {% for block in blocks %}
-                                <li style="color: white;" data-id="{{block.id}}">
-                                    <a href="{% url 'block-update' block_id=block.id schema_id=schema.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h1  class="mb-1">{{ block.block_type }}</h1>
-                                            <small>required: {{ block.required }}</small>
-                                            <br>
-                                            <h4>{{ block.display_text }} </h4>
-                                            <h4>{{ block.example_text }} </h4>
-                                            <h4>{{ block.help_text }} </h4>
-                                            <form  action="{% url 'block-delete' block_id=block.id schema_id=schema.id %}" method="post">
-                                                {% csrf_token %}
-                                                <button type="submit">Delete</button>
-                                            </form>
-                                        </div>
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="panel-footer" style="text-align: center;">
-                        <form class="form-inline" action="{% url 'block-add' schema_id=schema.id %}" method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="block_type">Block Type: </label>
-                                <select class="form-control" id="block_type" name="block_type" required>
-                                    {% for block_type in block_types %}
-                                         <option>{{block_type}}</option>
-                                    {% endfor %}
-                                </select>
-                                <button class="form-control" type="submit">Create New</button>
-                            </div>
-                        </form>
-                    </div>
+                <div id="collapse-editor" class="collapse show panel-body">
+                    <form  enctype="multipart/form-data" class="form-inline" method="post" action="{% url 'schema-update' schema_id=schema.id %}">
+                        {% csrf_token %}
+                         <div class="form-group col-md-5">
+                            <label for="name">Schema name</label>
+                            <input type="text" class="form-control" id="name" name="name" aria-describedby="name" value="{{schema.name}}" placeholder="Schema Name">
+                         </div>
+                         <div class="form-group col-md-5">
+                            <label for="version">Schema Version</label>
+                            <input type="number" class="form-control" id="version" name="version" aria-describedby="version" value="{{schema.version}}" placeholder="Schema Version">
+                         </div>
+                          <button type="submit" class="btn btn-primary form-control  col-md-2">Update</button>
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-default" >
-                <div class="panel panel-heading collapsed" href="#collapse-compare" data-toggle="collapse" style="margin-bottom: 0px;">
+                <div class="panel-heading" href="#collapse-blocks" data-toggle="collapse" style="margin-bottom: 0px; text-align: center;">
+                    <h3 style="margin: 0px;">Schema Blocks</h3>
+                </div>
+                <div id="collapse-blocks" class="collapse show panel-body">
+                    <ul id="sortable-blocks" class="list-group">
+                        {% csrf_token %}
+                        {% for block in blocks %}
+                            <li style="color: white;" data-id="{{block.id}}">
+                                <a href="{% url 'block-update' block_id=block.id schema_id=schema.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h1  class="mb-1">{{ block.block_type }}</h1>
+                                        <small>required: {{ block.required }}</small>
+                                        <br>
+                                        <h4>{{ block.display_text }} </h4>
+                                        <h4>{{ block.example_text }} </h4>
+                                        <h4>{{ block.help_text }} </h4>
+                                        <form  action="{% url 'block-delete' block_id=block.id schema_id=schema.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit">Delete</button>
+                                        </form>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="panel-footer" style="text-align: center;">
+                    <form class="form-inline" action="{% url 'block-add' schema_id=schema.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="block_type">Block Type: </label>
+                            <select class="form-control" id="block_type" name="block_type" required>
+                                {% for block_type in block_types %}
+                                <option>{{block_type}}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="form-control" type="submit">Create New</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default" >
+                <div class="panel panel-heading collapsed" href="#collapse-compare" data-toggle="collapse" style="margin-bottom: 0px; text-align: center;">
                     <h3 style="margin: 0px;">Compare Schemas (Beta)</h3>
                 </div>
                 <div class="panel-body collapse" id="collapse-compare" >
@@ -82,10 +95,9 @@
                     </select>
                     <pre id="compare"></pre>
 
-                </div>
-
             </div>
         </div>
+    </div>
     </div>
 
 
