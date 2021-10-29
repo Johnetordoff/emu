@@ -60,20 +60,20 @@
                             </li>
                         {% endfor %}
                     </ul>
-                </div>
-                <div class="panel-footer" style="text-align: center;">
-                    <form class="form-inline" action="{% url 'block-add' schema_id=schema.id %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="block_type">Block Type: </label>
-                            <select class="form-control" id="block_type" name="block_type" required>
-                                {% for block_type in block_types %}
-                                <option>{{block_type}}</option>
-                                {% endfor %}
-                            </select>
-                            <button class="form-control" type="submit">Create New</button>
-                        </div>
-                    </form>
+                    <div class="panel-footer" style="text-align: center;">
+                        <form class="form-inline" action="{% url 'block-add' schema_id=schema.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="block_type">Block Type: </label>
+                                <select class="form-control" id="block_type" name="block_type" required>
+                                    {% for block_type in block_types %}
+                                    <option>{{block_type}}</option>
+                                    {% endfor %}
+                                </select>
+                                <button class="form-control" type="submit">Create New</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
