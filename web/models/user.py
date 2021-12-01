@@ -53,7 +53,9 @@ class User(AbstractUser):
         resp = requests.get(
             settings.OSF_API_URL + "v2/", headers={"Authorization": f"Bearer {token}"}
         )
+        resp.raise_for_status()
         user_data = resp.json()
+
         fullname = user_data["meta"]["current_user"]["data"]["attributes"]["full_name"]
         guid = user_data["meta"]["current_user"]["data"]["id"]
 

@@ -38,7 +38,6 @@ from web.views.bulk_upload_contrbutors.bulk_upload_contributors import (
     BulkUploadContributors,
 )
 
-from spam_scan.views import SpamScanView
 from django.conf.urls import url, include
 from django.urls import path
 
@@ -93,7 +92,6 @@ urlpatterns = [
         BulkUploadContributors.as_view(),
         name="bulk_upload_contributors",
     ),
-    url(r"^spam_scan/$", SpamScanView.as_view(), name='spam_scan'),
     path(r"schema/<int:schema_id>/compare/", SchemaCompareView.as_view(), name='compare'),
 
 ]

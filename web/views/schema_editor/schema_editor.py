@@ -64,7 +64,7 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
 
     def read_csv(self, schema, file, request):
 
-        for row in csv.DictReader(codecs.iterdecode(file.file, "utf-8"), delimiter=","):
+        for row in csv.DictReader(codecs.iterdecode(file.file, 'utf-8-sig'), delimiter=","):
             try:
                 row["required"] = True if row.pop("required") == "TRUE" else False
             except KeyError:
