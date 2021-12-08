@@ -71,7 +71,12 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
                 raise AssertionError('`required` is a required column')
             row.pop('', None)  # empty columns
             assert row['block_type'] in [block[0] for block in Block.SCHEMABLOCKS], f'{row["block_type"]} is not a valid block type'
-            block = Block(**row)
+
+            try:
+                block = Block(**row)
+            except TypeError as e:
+                raise AssertionError(e)
+
             block.schema_id = schema.id
             block.user = request.user
             block.save()
