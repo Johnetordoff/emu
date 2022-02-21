@@ -39,6 +39,11 @@ class BlockForm(ModelForm):
     )
     index = forms.IntegerField(required=False)
     csv = forms.FileField(widget=forms.ClearableFileInput(), required=False)
+    registration_response_key = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        help_text="This is legacy for bulk upload only",
+    )
 
     class Meta:
         model = Block

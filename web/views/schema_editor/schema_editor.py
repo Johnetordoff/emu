@@ -63,8 +63,21 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
             return redirect(reverse("schema_editor"))
 
     def read_csv(self, schema, file, request):
+        lst = [row for row in csv.DictReader(codecs.iterdecode(file.file, 'utf-8-sig'), delimiter=",")]
+        data = []
+        for item in lst:
+            formatted_data = {}
+            formatted_data['block_type'] = item['block_type']
+            formatted_data['display_text'] = item[
+                'Display_text\nWill always be displayed, both on form input and when displaying form read-only']
+            formatted_data['example_text'] = item[
+                '\nInstruction TEXT (displays on form view, not on registration view)']
+            formatted_data['help_text'] = item['help_text\nEXAMPLE TEXT (Appears if "See example" link is clicked)']
+            formatted_data['required'] = item['data__attributes__required']
+            formatted_data['registration_response_key'] = item['Question number']
+            data.append(formatted_data)
 
-        for row in csv.DictReader(codecs.iterdecode(file.file, 'utf-8-sig'), delimiter=","):
+        for row in data:
             try:
                 row["required"] = True if row.pop("required") == "TRUE" else False
             except KeyError:
@@ -211,6 +224,7 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
                 "block_type": block.block_type,
                 "required": block.required,
                 "index": block.index,
+                "registration_response_key": block.registration_response_key,
             }
         )
         form.display_text = self.get_object().display_text
