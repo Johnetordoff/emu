@@ -45,6 +45,7 @@ from django.urls import path
 urlpatterns = [
     url(r"^$", index, name="home"),
     url("^", include("django.contrib.auth.urls")),
+    url(r"^spam_report/", include('canary.urls')),
     url(r"^admin/", admin.site.urls, name="admin_app"),
     url(r"^osf_oauth/$", OSFOauthView.as_view(), name="osf_oauth"),
     url(r"^callback/$", OSFOauthCallbackView.as_view(), name="callback"),
