@@ -124,6 +124,9 @@ class Block(models.Model):
     )
     required = models.BooleanField(null=True)
     index = models.PositiveIntegerField(null=True)
+    registration_response_key = models.CharField(
+        max_length=5000, null=True, blank=True, default="", help_text="This is legacy for bulk uploads"
+    )
 
     def __str__(self):
         return f"#{self.index} - {self.block_type}"
@@ -149,6 +152,8 @@ class Block(models.Model):
             data['example_text'] = self.example_text
         if self.required:
             data['required'] = self.required
+        if self.required:
+            data['registration_response_key'] = self.registration_response_key
 
         return data
 
