@@ -37,8 +37,8 @@ async def get_paginated_data(token, url, page_range=None):
         )
 
         if not page_range:
-            page_range = range(1, math.ceil(int(total) / int(per_page))) or page_range
-        for i in range(*page_range):
+            page_range = range(1, math.ceil(int(total) / int(per_page)))
+        for i in page_range:
             task = get_pages(token, url, i, result)
             tasks.append(task)
 
