@@ -63,18 +63,17 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
             return redirect(reverse("schema_editor"))
 
     def read_csv(self, schema, file, request):
-        lst = [row for row in csv.DictReader(codecs.iterdecode(file.file, 'utf-8-sig'), delimiter=",")]
+        lst = [row for row in csv.DictReader(codecs.iterdecode(file.file, 'utf-8-sig'), delimiter=",")][1:]
         data = []
         for item in lst:
             formatted_data = {}
-            formatted_data['block_type'] = item['block_type']
-            formatted_data['display_text'] = item[
-                'Display_text\nWill always be displayed, both on form input and when displaying form read-only']
-            formatted_data['example_text'] = item[
-                '\nInstruction TEXT (displays on form view, not on registration view)']
-            formatted_data['help_text'] = item['help_text\nEXAMPLE TEXT (Appears if "See example" link is clicked)']
-            formatted_data['required'] = item['data__attributes__required']
-            formatted_data['registration_response_key'] = item['Question number']
+            item = list(item.values())
+            formatted_data['block_type'] = item[0]
+            formatted_data['display_text'] = item[1]
+            formatted_data['example_text'] = item[2]
+            formatted_data['help_text'] = item[3]
+            formatted_data['required'] = item[4]
+            formatted_data['registration_response_key'] = item[5]
             data.append(formatted_data)
 
         for row in data:
