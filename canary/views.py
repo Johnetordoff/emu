@@ -1,5 +1,4 @@
 import csv
-import requests
 from django import forms
 
 from django.views.generic import TemplateView
@@ -12,6 +11,7 @@ from canary.management.commands.filter_search import filter_search
 from django.shortcuts import render
 from asyncio import run
 from django.http import HttpResponse
+from django.utils import timezone
 
 
 class SpamReportForm(ModelForm):
@@ -71,18 +71,16 @@ class UserQuickSearch(LoginRequiredMixin, TemplateView, FormView):
         value = self.request.POST['value']
         filter_type = self.request.POST['filter_type']
         output = self.request.POST['output']
-        print(output)
         text = run(filter_search(filter=filter_type, value=value, fields=fields, output=output))
-        print(text)
-        if output == 'html':
-            return render(request=self.request, context={'text': text}, template_name=self.template_name)
+        if output == 'HTML':
+            return render(request=self.request, context={'text': text, **self.get_context_data()}, template_name=self.template_name)
         elif output == 'CSV':
+
             response = HttpResponse(
                 content_type='text/csv',
             )
-            print(response)
-            print(response)
+            response['Content-Disposition'] = f'attachment; filename="{value}-{timezone.now()}.csv"'
+
             writer = csv.writer(response)
             writer.writerows(text)
-            print(text)
             return response

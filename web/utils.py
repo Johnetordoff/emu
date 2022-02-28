@@ -15,7 +15,7 @@ async def get_with_retry(token, url, headers=None):
 
 
 async def get_pages(token, url, page, result={}):
-    url = f"{url}?page={page}&page={page}"
+    url = f"{url}&page={page}"
     data = await get_with_retry(token, url)
     result[page] = data["data"]
     return result
@@ -37,12 +37,13 @@ async def get_paginated_data(token, url, page_range=None):
         )
 
         if not page_range:
-            page_range = range(1, math.ceil(int(total) / int(per_page)))
+            page_range = range(1, math.ceil(int(total) / int(per_page)) + 1)
         for i in page_range:
             task = get_pages(token, url, i, result)
             tasks.append(task)
 
         await asyncio.gather(*tasks)
+
         pages_as_list = []
         # through the magic of async all our pages have loaded.
         for page in list(result.values()):

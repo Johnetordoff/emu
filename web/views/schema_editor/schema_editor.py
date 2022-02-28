@@ -178,7 +178,6 @@ class SchemaUpdateView(LoginRequiredMixin, UpdateView):
         with open(file.name, "r") as fp:
             spamreader = csv.reader(fp, delimiter=",")
             for row in spamreader:
-                print(row)
                 data = row[0]
 
 

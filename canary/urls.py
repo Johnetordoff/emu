@@ -1,6 +1,4 @@
-from django.contrib import admin
 from canary.views import (
-    ReportSpamView,
     UserQuickSearch
 )
 

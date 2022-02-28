@@ -1,19 +1,21 @@
-import datetime
 import logging
-import requests
 from django.core.management.base import BaseCommand
 
 logger = logging.getLogger(__name__)
 from web.utils import get_paginated_data
 from asyncio import run
 
+
 async def filter_search(filter, value, fields, output='html'):
     data = await get_paginated_data(
         token=None,
-        url=f'https://api.osf.io/v2/users/?filter[{filter}]={value}&fields={fields}'
+        url=f'https://api.osf.io/v2/users/?filter[{filter}]={value}&fields={",".join(fields)}&page[size]=100'
     )
-    if output == 'html':
-        html = '<table>'
+    if 'data' in data:
+        data = data['data']
+
+    if output == 'HTML':
+        html = '<table class="table" >'
         for field in fields:
             html += f'<th>{field}</th>'
         for item in data:

@@ -27,7 +27,6 @@ class User(AbstractUser):
         url = f"{settings.OSF_CAS_URL}oauth2/token?"
         url += query_params
         resp = requests.post(url)
-        print(resp.__dict__)
         token = resp.json()["access_token"]
 
         requests.get(
