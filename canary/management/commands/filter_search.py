@@ -8,12 +8,13 @@ from web.utils import get_paginated_data
 from asyncio import run
 
 async def filter_search(filter, value, fields, output='html'):
-    data = await get_paginated_data(
+    data = (await get_paginated_data(
         token=None,
         url=f'https://api.osf.io/v2/users/?filter[{filter}]={value}&fields={fields}'
-    )
-    if output == 'html':
-        html = '<table>'
+    ))['data']
+
+    if output == 'HTML':
+        html = '<table class="table" >'
         for field in fields:
             html += f'<th>{field}</th>'
         for item in data:
