@@ -30,18 +30,31 @@ class UserFilterSearch(forms.Form):
     )
     FILTER_CHOICES = (
         ('full_name', 'Full Name'),
+        ('given_name', 'Given Name'),
+        ('family_name', 'Family Name'),
+        ('middle_names', 'Middle Names'),
+        ('_id', '_id'),
     )
     FIELDS_CHOICES = (
         ('_id', 'GUID'),
         ('full_name', 'Full Name'),
+        ('given_name', 'Given Name'),
+        ('family_name', 'Family Name'),
+        ('middle_names', 'Middle Names'),
+        ('_id', '_id'),
     )
     output = forms.ChoiceField(
+        help_text='Select the format you want returned',
         required=True,
         choices=OUTPUT_CHOICES
     )
     filter_type = forms.ChoiceField(required=True, choices=FILTER_CHOICES)
     value = forms.CharField(required=True)
-    fields = forms.MultipleChoiceField(required=True, choices=FIELDS_CHOICES)
+    fields = forms.MultipleChoiceField(
+        help_text='Select one or more fields for output using the shift key',
+        required=True,
+        choices=FIELDS_CHOICES
+    )
 
 
 class ReportSpamListView(LoginRequiredMixin, TemplateView, FormView):
@@ -65,6 +78,7 @@ class UserQuickSearch(LoginRequiredMixin, TemplateView, FormView):
     template_name = "canary/report_spam.html"
     form_class = UserFilterSearch
     success_url = reverse_lazy('report_spam')
+    login_url = reverse_lazy("osf_oauth")
 
     def post(self, *args, **kwargs):
         fields = dict(self.request.POST)['fields']

@@ -9,7 +9,7 @@ from asyncio import run
 async def filter_search(filter, value, fields, output='html'):
     data = await get_paginated_data(
         token=None,
-        url=f'https://api.osf.io/v2/users/?filter[{filter}]={value}&fields={",".join(fields)}&page[size]=100'
+        url=f'https://api.osf.io/v2/users/?filter[{filter}]={value}&fields[users]={",".join(fields)}&page[size]=100'
     )
     if 'data' in data:
         data = data['data']
