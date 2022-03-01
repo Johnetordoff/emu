@@ -1,5 +1,6 @@
 from canary.views import (
-    UserQuickSearch
+    UserQuickSearch,
+    NodeQuickSearch
 )
 
 from django.urls import path
@@ -7,5 +8,6 @@ from django.urls import path
 
 
 urlpatterns = [
-    path("report/", UserQuickSearch.as_view(), name="report_spam"),
+    path("search/user/", UserQuickSearch.as_view(), name="search_user"),
+    path("search/node/", NodeQuickSearch.as_view(), name="search_node"),
 ]

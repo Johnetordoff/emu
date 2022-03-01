@@ -7,7 +7,7 @@ from django.forms import ModelForm
 from canary.models import SpamReport
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from canary.management.commands.filter_search import filter_search
+from canary.management.commands.filter_search import user_filter_search, node_filter_search
 from django.shortcuts import render
 from asyncio import run
 from django.http import HttpResponse
@@ -57,6 +57,37 @@ class UserFilterSearch(forms.Form):
     )
 
 
+class NodeFilterSearch(forms.Form):
+
+    OUTPUT_CHOICES = (
+        ('HTML', 'html'),
+        ('CSV', 'csv'),
+    )
+    FILTER_CHOICES = (
+        ('title', 'Title'),
+        ('description', 'Description'),
+        ('tags', 'Tags'),
+    )
+    FIELDS_CHOICES = (
+        ('_id', 'GUID'),
+        ('title', 'Title'),
+        ('description', 'Description'),
+        ('tags', 'Tags'),
+    )
+    output = forms.ChoiceField(
+        help_text='Select the format you want returned',
+        required=True,
+        choices=OUTPUT_CHOICES
+    )
+    filter_type = forms.ChoiceField(required=True, choices=FILTER_CHOICES)
+    value = forms.CharField(required=True)
+    fields = forms.MultipleChoiceField(
+        help_text='Select one or more fields for output using the shift key',
+        required=True,
+        choices=FIELDS_CHOICES
+    )
+
+
 class ReportSpamListView(LoginRequiredMixin, TemplateView, FormView):
     pass
 
@@ -65,6 +96,7 @@ class ReportSpamView(LoginRequiredMixin, TemplateView, FormView):
     template_name = "canary/report_spam.html"
     form_class = UserFilterSearch
     success_url = reverse_lazy('report_spam')
+
 
     def post(self, *args, **kwargs):
         SpamReport.create(
@@ -75,8 +107,41 @@ class ReportSpamView(LoginRequiredMixin, TemplateView, FormView):
 
 
 class UserQuickSearch(LoginRequiredMixin, TemplateView, FormView):
-    template_name = "canary/report_spam.html"
+    template_name = "canary/user_search.html"
     form_class = UserFilterSearch
+    success_url = reverse_lazy('report_spam')
+    login_url = reverse_lazy("osf_oauth")
+
+    def get_context_data(self, **kwargs):
+        """Insert the form into the context dict."""
+        if 'form' not in kwargs:
+            kwargs['user_form'] = UserFilterSearch
+            kwargs['node_form'] = NodeQuickSearch
+        return super().get_context_data(**kwargs)
+
+    def post(self, *args, **kwargs):
+        fields = dict(self.request.POST)['fields']
+        value = self.request.POST['value']
+        filter_type = self.request.POST['filter_type']
+        output = self.request.POST['output']
+        text = run(user_filter_search(filter=filter_type, value=value, fields=fields, output=output))
+        if output == 'HTML':
+            return render(request=self.request, context={'text': text, **self.get_context_data()}, template_name=self.template_name)
+        elif output == 'CSV':
+
+            response = HttpResponse(
+                content_type='text/csv',
+            )
+            response['Content-Disposition'] = f'attachment; filename="{value}-{timezone.now()}.csv"'
+
+            writer = csv.writer(response)
+            writer.writerows(text)
+            return response
+
+
+class NodeQuickSearch(LoginRequiredMixin, TemplateView, FormView):
+    template_name = "canary/node_search.html"
+    form_class = NodeFilterSearch
     success_url = reverse_lazy('report_spam')
     login_url = reverse_lazy("osf_oauth")
 
@@ -85,7 +150,7 @@ class UserQuickSearch(LoginRequiredMixin, TemplateView, FormView):
         value = self.request.POST['value']
         filter_type = self.request.POST['filter_type']
         output = self.request.POST['output']
-        text = run(filter_search(filter=filter_type, value=value, fields=fields, output=output))
+        text = run(node_filter_search(filter=filter_type, value=value, fields=fields, output=output))
         if output == 'HTML':
             return render(request=self.request, context={'text': text, **self.get_context_data()}, template_name=self.template_name)
         elif output == 'CSV':
