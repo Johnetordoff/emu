@@ -67,13 +67,16 @@ class CSVtoSchemaView(LoginRequiredMixin, View):
         data = []
         for item in lst:
             formatted_data = {}
-            item = list(item.values())
-            formatted_data['block_type'] = item[0]
-            formatted_data['display_text'] = item[1]
-            formatted_data['example_text'] = item[2]
-            formatted_data['help_text'] = item[3]
-            formatted_data['required'] = item[4]
-            formatted_data['registration_response_key'] = item[5]
+            try:
+                item = list(item.values())
+                formatted_data['block_type'] = item[0]
+                formatted_data['display_text'] = item[1]
+                formatted_data['example_text'] = item[2]
+                formatted_data['help_text'] = item[3]
+                formatted_data['required'] = item[4]
+                formatted_data['registration_response_key'] = item[5]
+            except:
+                raise AssertionError('Columns are wrong, should be `block_type`, display_text, example_text, help_text, required, registration_response_key')
             data.append(formatted_data)
 
         for row in data:
