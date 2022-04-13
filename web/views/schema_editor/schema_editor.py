@@ -221,6 +221,8 @@ class BlockUpdateView(LoginRequiredMixin, UpdateView, FormView):
         block = self.get_object()
         form = self.form_class(
             initial={
+                "example_text": block.example_text,
+                "help_text": block.help_text,
                 "display_text": block.display_text,
                 "block_type": block.block_type,
                 "required": block.required,

@@ -143,13 +143,13 @@ class Block(models.Model):
     def to_atomic_schema_block(self):
         data = {"block_type": self.block_type}
         if self.help_text:
-            data['example_text'] = self.help_text
+            data['help_text'] = self.help_text
 
         if self.display_text:
             data['display_text'] = self.display_text
 
         if self.example_text:
-            data['help_text'] = self.example_text
+            data['example_text'] = self.example_text
         if self.required:
             data['required'] = self.required
         if self.required:
