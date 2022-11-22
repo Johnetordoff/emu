@@ -18,6 +18,8 @@ from web.views.index_views import (
     index,
     OSFOauthCallbackView,
     OSFOauthView,
+    WizardView,
+    WizardIndex
 )
 
 from web.views.schema_editor.schema_editor import (
@@ -94,5 +96,7 @@ urlpatterns = [
         name="bulk_upload_contributors",
     ),
     path(r"schema/<int:schema_id>/compare/", SchemaCompareView.as_view(), name='compare'),
+    path(r"wizard/", WizardView.as_view(), name='schema_wizard'),
+    path(r"schema_wizard/", WizardIndex.as_view(), name='schema_wizard_index'),
 
 ]

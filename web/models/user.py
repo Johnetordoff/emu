@@ -4,12 +4,13 @@ import urllib
 import requests
 from app import settings
 from django.db import models
+from web.fields import EncryptedTextField
 
 
 class User(AbstractUser):
     guid = models.CharField(null=True, blank=True, max_length=500)
     refresh_token = models.CharField(null=True, blank=True, max_length=500)
-    token = models.CharField(null=True, blank=True, max_length=500)
+    token = EncryptedTextField(null=True, blank=True, max_length=500)
     code = models.CharField(null=True, blank=True, max_length=500)
     admin = models.BooleanField(null=True, blank=True)
     bulk_contributors_csv = models.FileField(

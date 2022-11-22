@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Schema Wizard!</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+
+    <!-- Animate CSS for the css animation support if needed -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+
+    <!-- Demo files -->
+    <link href="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/css/smart_wizard_all.min.css" rel="stylesheet"
+          type="text/css"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://unpkg.com/98.css" rel="stylesheet">
+</head>
+<body>
+<header class="header-global">
+    <nav id="navbar-main">
+    </nav>
+</header>
+
+<div class="window" style="width: 50%; margin: auto;">
+    <div class="title-bar">
+        <div class="title-bar-text">A Schema Wizard</div>
+        <div class="title-bar-controls">
+            <button aria-label="Help"></button>
+        </div>
+    </div>
+    <div id="schemapicker">
+        <ul class="nav nav-progress">
+            <li class="nav-item" id="welcome-tab">
+                <a class="nav-link" href="#welcome">
+                    <div class="num">Ò</div>
+                    Welcome!
+                </a>
+            </li>
+            <li class="nav-item" id="datacollection-tab">
+                <a class="nav-link" href="#datacollection">
+                    <div class="num">?</div>
+                    Data Collection
+                </a>
+            </li>
+            <li class="nav-item" id="inprinciple-tab">
+                <a class="nav-link" href="#inprinciple">
+                    <div class="num">?</div>
+                    In Principle Acceptance
+                </a>
+            </li>
+            <li class="nav-item" id="replication-tab">
+                <a class="nav-link" href="#replication">
+                    <div class="num">?</div>
+                    <p>
+                        Replication Study
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item" id="recipe-tab">
+                <a class="nav-link" href="#recipe">
+                    <div class="num">ƒ</div>
+                    Replication Recipe Results
+                </a>
+            </li>
+            <li class="nav-item" id="archive-tab">
+                <a class="nav-link" href="#archive">
+                    <div class="num">ƒ</div>
+                    Project Archive Form
+                </a>
+            </li>
+            <li class="nav-item" id="preanalysis-tab">
+                <a class="nav-link" href="#preanalysis">
+                    <div class="num">ƒ</div>
+                    Pre-Analysis Plan
+                </a>
+            </li>
+            <li class="nav-item" id="templates-tab">
+                <a class="nav-link" href="#basicprereg">
+                    <div class="num">ƒ</div>
+                    Select Templates
+                </a>
+            </li>
+            <li class="nav-item" id="basicprereg-tab">
+                <a class="nav-link" href="#basicprereg">
+                    <div class="num">ƒ</div>
+                    Basic Pre-Data Collection Registration
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div aria-labelledby="welcome" class="tab-pane" id="welcome" role="tabpanel">
+                <h3>Welcome</h3>
+                <p>
+                    This is a helpful install wizard to begin your preregistration process. Here we can determine what
+                    form of preregistration is right for yor experiment.
+                </p>
+            </div>
+            <div aria-labelledby="datacollection" class="tab-pane" id="datacollection" role="tabpanel">
+                <h4>Data Collection</h4>
+                <p>
+                    Have you already completed your study?
+                </p>
+                <div aria-labelledby="datacollection-choice" id="datacollection-choice"
+                     role="tabpanel">
+                    <form class="row row-cols-1 ms-5 me-5 needs-validation" id="form-2">
+                        <fieldset>
+                            <legend>Select one:</legend>
+                            <div class="field-row">
+                                <input class="form-check-input" id="haventstarted" name="datacollection-choice"
+                                       type="radio">
+                                <label class="orm-check-label" for="haventstarted">
+                                    <b>Haven't started collecting data yet</b>
+                                </label>
+                            </div>
+                            <div class="field-row">
+                                <i>This is to make a plan for a future experiment.</i>
+                            </div>
+                            <div class="field-row">
+                                <input class="form-check-input" id="ongoing" name="datacollection-choice"
+                                       type="radio">
+                                <label class="form-check-label" for="ongoing">
+                                    <b>Data collection in ongoing or finished</b>
+                                </label>
+                            </div>
+                            <div class="field-row">
+                                <i>This is the option for registering experiments that are ongoing in order to publicize and data and metadata for those experiments.</i>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div aria-labelledby="inprinciple" class="tab-pane" id="inprinciple-choice" role="tabpanel">
+                <h3>In Principle Acceptance</h3>
+                <p>
+                    Have you received In Principle Acceptance from a registered reports journal?
+                </p>
+                <div aria-labelledby="inprinciple" id="inprinciple" role="tabpanel">
+                    <form class="row row-cols-1 ms-5 me-5 needs-validation" id="form-3" novalidate>
+                        <fieldset>
+                            <legend>Select one:</legend>
+                            <div class="field-row">
+                                <input class="form-check-input" id="yes-inprinciple" name="inprinciple-choice"
+                                       type="radio">
+                                <label class="form-check-label" for="yes-inprinciple">
+                                    <b>Yes</b>
+                                </label>
+                            </div>
+                            <div class="field-row">
+                                <i>
+                                    This is the option for experiments that have been granted in "In Principle
+                                    Acceptance" in a journal, meaning they will be published regardless of results, as
+                                    long as the study criteria is followed.
+                                </i>
+                            </div>
+                            <div class="field-row">
+                                <input class="form-check-input" id="no-inprinciple" name="inprinciple-choice"
+                                       type="radio">
+                                <label class="form-check-label" for="no-inprinciple">
+                                    <b>No</b>
+                                </label>
+                            </div>
+                            <div class="field-row">
+                                <i>
+                                    This is the option for experiments that have not been granted in "In Principle
+                                    Acceptance" in a journal.
+                                </i>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div aria-labelledby="replication" class="tab-pane" id="replication-choice" role="tabpanel">
+                <h3>Replication Study</h3>
+                <p>
+                    Is this a "Replication Recipe Preregistration"?
+                </p>
+                <div aria-labelledby="replication" class="tab-pane" id="replication" role="tabpanel">
+                    <form class="row row-cols-1 ms-5 me-5 needs-validation" id="form-4">
+                        <fieldset>
+                            <legend>Select one:</legend>
+                            <div class="field-row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="yes-replication" name="replication-choice"
+                                               type="radio">
+                                        <label class="form-check-label" for="yes-replication">
+                                            <b>Yes</b>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <i>
+                                    This study exists to replicate or ensure the replicability another experiment and
+                                    includes a "Replication Recipe Preregistration" and I wish to formally state my
+                                    results.
+                                </i>
+                            </div>
+                            <div class="field-row">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="no-replication" name="replication-choice"
+                                           type="radio">
+                                    <label class="form-check-label" for="no-replication">
+                                        <b>No</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <i>
+                                    This is not a "Replication Recipe Preregistration" study and is complete and ready
+                                    to publicize it's metadata and archive.
+                                </i>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div aria-labelledby="recipe" class="tab-pane" id="recipe-choice" role="tabpanel">
+                <h2>Registered Report Recipe Study</h2>
+                <div aria-labelledby="recipe" class="tab-pane" id="recipe" role="tabpanel">
+                    <p>
+                        Use this form when you have already preregistered using the “Replication Recipe Preregistration”
+                        and wish to formally state your results.
+                    </p>
+                </div>
+            </div>
+            <div aria-labelledby="archive" class="tab-pane" id="archive-choice" role="tabpanel">
+                <h2>Archive Project Form</h2>
+                <p>
+                    Use this form to take a snapshot of your project at a particular point in time, such as when data,
+                    materials, or code are ready to share in a persistent way prior to publication
+                </p>
+                <div aria-labelledby="archive" class="tab-pane" id="archive" role="tabpanel">
+                    <select id="project-archiver">
+                        {% for node in nodes %}
+                            <option value="{{node.id}}" >{{node.attributes.title}} ({{node.id}})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div aria-labelledby="preanalysis" class="tab-pane" id="preanalysis-choice" role="tabpanel">
+                <h2>Pre-analysis Plan</h2>
+                <p>
+                    Do you already have an already complete analysis plan?
+                </p>
+                <div aria-labelledby="preanalysis" class="tab-pane" id="preanalysis" role="tabpanel">
+                    <form class="row row-cols-1 ms-5 me-5 needs-validation">
+                        <fieldset>
+                            <legend>Select one:</legend>
+                            <div class="field-row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+
+                                        <input class="form-check-input" id="yes-preanalysis" name="preanalysis-choice"
+                                               type="radio">
+                                        <label class="form-check-label" for="yes-preanalysis">
+                                            Yes
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="no-preanalysis" name="preanalysis-choice"
+                                               type="radio">
+                                        <label class="form-check-label" for="no-preanalysis">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div aria-labelledby="analysis" class="tab-pane" id="analysis-choice" role="tabpanel">
+                <h5>Analysis Forms</h5>
+                <div aria-labelledby="analysis" class="tab-pane" id="analysis" role="tabpanel">
+                    <li>
+                        OSF Preregistration
+                        <blockquote>
+                            Use this form when making a detailed preregistration. It is appropriate for replication
+                            studies, original research, and for most fields of research
+                        </blockquote>
+                    </li>
+                    <li>
+                        Social Psychology Preregistration
+                        <blockquote>
+                            Use this form for making a detailed preregistration in social psychology.
+                        </blockquote>
+                    </li>
+                    <li>
+                        Replication Recipe Preregistration
+                        <blockquote>
+                            Use this form when you want to follow recommendations for what to include in a replication
+                            study, particularly in social or experimental psychology.
+                        </blockquote>
+                    </li>
+                    <li>
+                        Preregistration Template from AsPredicted.org
+                        <blockquote>
+                            Use this form to make a concise preregistration. It contains eight questions derived from
+                            content recommended by AsPredicted.org
+                        </blockquote>
+                    </li>
+                </div>
+            </div>
+            <div aria-labelledby="basicprereg" class="tab-pane" id="basicprereg-choice" role="tabpanel">
+                <h2>Basic Pre-Data Collection Registration</h2>
+                <div aria-labelledby="basicprereg" class="tab-pane" id="basicprereg" role="tabpanel">
+                    Use this form if you have created your own preregistration document on your OSF project, such as in
+                    an uploaded file.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootrap for the demo page -->
+<script crossorigin="anonymous"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Include jQuery -->
+<script crossorigin="anonymous"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery Slim 3.6  -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script> -->
+
+<!-- Include SmartWizard JavaScript source -->
+<script src="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/js/jquery.smartWizard.min.js"
+        type="text/javascript"></script>
+
+<script type="text/javascript">
+        var steps_etc;
+        var schema;
+        steps_etc = [];
+
+        function onFinish(){
+            window.location = '{% url 'schema_wizard' %}?schema=' + schema + '&branched_from=' + $('#project-archiver').find(":selected").val();
+        }
+        function onCancel(){
+            $('#schemapicker').smartWizard("reset");
+            $(".sw-btn").removeClass('sw-btn');
+            $(".btn").removeClass('btn');
+        }
+        function jump_if_checked(selector, step, e){
+            if ($(selector).is(':checked')) {
+                $('input:radio').prop("checked", false);
+                $("#schemapicker").smartWizard('goToStep', step, true);
+                e.preventDefault();
+                return true;
+            };
+        }
+        function leaveStep(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
+                if(stepDirection === 'backward') {
+                    $("#schemapicker").off("leaveStep");
+                    steps_etc.pop()
+                    $('input:radio').prop("checked", false);
+                    $("#schemapicker").smartWizard('goToStep', steps_etc.pop(), true);
+                    $("#schemapicker").on("leaveStep", leaveStep)
+                    $(".btn-finish").attr('disabled', true);
+                    e.preventDefault();
+                } else {
+                    if (jump_if_checked('#ongoing', 3, e)) { return true };
+                    if (jump_if_checked('#haventstarted', 2, e)) { return true };
+                    if (jump_if_checked('#yes-replication', 4, e)) { return true };
+                    if (jump_if_checked('#no-replication', 5, e)) { return true };
+                    if (jump_if_checked('#no-inprinciple', 6, e)) { return true };
+                    if (jump_if_checked('#yes-inprinciple', 5, e)) { return true };
+                    if (jump_if_checked('#yes-preanalysis', 8, e)) { return true };
+                }
+            }
+
+        $(function() {
+            // Step show event
+            $("#schemapicker").on("leaveStep", leaveStep);
+
+            $("#schemapicker").on("showStep", function(e, anchorObject, stepIndex, stepDirection, stepPosition) {
+                steps_etc.push(stepIndex);
+
+                if(stepPosition === 'first') {
+                    $(".sw-btn-prev").addClass('disabled').prop('disabled', true);
+                    $(".sw-btn-next").attr('disabled', false);
+                } else if(stepPosition === 'last') {
+                    $(".sw-btn-next").addClass('disabled').prop('disabled', true);
+                    $(".sw-btn-next").attr('disabled', true);
+                } else {
+                    $(".sw-btn-prev").removeClass('disabled').prop('disabled', false);
+                    $(".sw-btn-next").removeClass('disabled').prop('disabled', false);
+                    $(".sw-btn-next").attr('disabled', true);
+                }
+                console.log(stepIndex);
+                if(stepIndex === 4) {
+                    schema = 'recipe';
+                    $(".btn-finish").attr('disabled', false);
+                }
+                if(stepIndex === 5) {
+                    schema = 'open-ended';
+                }
+
+                // Get step info from Smart Wizard
+                let stepInfo = $('#schemapicker').smartWizard("getStepInfo");
+                $("#sw-current-step").text(stepInfo.currentStep + 1);
+                $("#sw-total-step").text(stepInfo.totalSteps);
+
+            });
+
+            $("#schemapicker").on("initialized", function(e) {
+                console.log("initialized");
+            });
+
+            $("#schemapicker").on("loaded", function(e) {
+                console.log("loaded");
+            });
+
+            // Smart Wizard
+            $('#schemapicker').smartWizard({
+                selected: 0,
+                autoAdjustHeight: true,
+                theme: 'basic', // basic, arrows, square, round, dots
+                transition: {
+                },
+                toolbar: {
+                  showNextButton: true, // show/hide a Next button
+                  showPreviousButton: true, // show/hide a Previous button
+                  position: 'bottom', // none/ top/ both bottom
+                  extraHtml: `<button class="btn-finish" onclick="onFinish()" disabled>Finish</button>
+                              <button class="" onclick="onCancel()">Cancel</button>`
+                },
+                anchor: {
+                    enableNavigation: false, // Enable/Disable anchor navigation
+                    enableNavigationAlways: true, // Activates all anchors clickable always
+                    enableDoneState: true, // Add done state on visited steps
+                    markPreviousStepsAsDone: false, // When a step selected by url hash, all previous steps are marked done
+                    unDoneOnBackNavigation: true, // While navigate back, done state will be cleared
+                    enableDoneStateNavigation: false // Enable/Disable the done state navigation
+                },
+                disabledSteps: [], // Array Steps disabled
+                errorSteps: [], // Highlight step with errors
+                hiddenSteps: [], // Hidden steps
+<!--                getContent: (idx, stepDirection, selStep, callback) => {-->
+<!--                    console.log('getContent',selStep, idx, stepDirection);-->
+<!--                }-->
+            });
+            $(".sw-btn").removeClass('sw-btn');
+            $(".btn").removeClass('btn');
+            $('input:radio').change(
+                function(){
+                    if ($('input:radio').is(':checked')) {
+                        $(".sw-btn-next").attr('disabled', false);
+                    }
+                }
+            );
+            $('#project-archiver').change(
+                function(){
+                    $(".btn-finish").attr('disabled', false);
+                }
+            );
+        });
+</script>
+</body>
+</html>

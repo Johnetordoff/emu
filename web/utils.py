@@ -51,3 +51,33 @@ async def get_paginated_data(token, url, page_range=None):
         return pages_as_list
     else:
         return data
+
+
+def create_new_draft_registation(uri, schema_id, branched_from, token):
+    data = {
+            'data': {
+                'type': 'draft_registrations',
+                'relationships': {
+                    'registration_schema': {
+                        'data': {
+                            'id': schema_id,
+                            'type': 'registration_schemas'
+                        }
+                    }
+                }
+            }
+        }
+
+    if branched_from:
+        data['data']['attributes'] = {
+            'branched_from': branched_from
+        }
+
+    return requests.post(
+        f'{uri}v2/draft_registrations/',
+        json=data,
+        headers={
+            'Content-Type': 'application/vnd.api+json',
+            'Authorization': f'Bearer {token}'
+        }
+    )

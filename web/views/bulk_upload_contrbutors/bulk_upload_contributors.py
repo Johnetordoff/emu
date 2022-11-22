@@ -49,8 +49,6 @@ class BulkUploadContributors(
         form = BulkUploadContributorsForm(request.POST, request.FILES)
         user = request.user
         form.fields["node_id"].choices = self.get_node_choices(user)
-        if user.bulk_contributors_csv:
-            form.fields["contributors_csv"].required = False
 
         if form.is_valid():
             user.bulk_contributors_csv = (
