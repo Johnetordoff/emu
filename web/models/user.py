@@ -68,3 +68,8 @@ class User(AbstractUser):
             user.save()
 
         return user
+
+    def get_token(self):
+        if not self.token:
+            self.refresh_token()
+        return self.token

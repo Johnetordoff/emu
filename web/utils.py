@@ -3,6 +3,16 @@ import requests
 import math
 
 
+async def get_paginated_data_refresh(user, url, page_range=None):
+    try:
+        return await get_paginated_data(user.get_token(), url, page_range)
+    except requests.exceptions.HTTPError:
+        del user.token
+        return await get_paginated_data(user.get_token(), url, page_range)
+
+
+
+
 async def get_with_retry(token, url, headers=None):
     if not headers:
         headers = {}

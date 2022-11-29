@@ -7,7 +7,7 @@ from my_secrets.secrets import OSF_OAUTH_CLIENT_ID
 from app.settings import OSF_REDIRECT_URI, OSF_CAS_URL, OSF_API_URL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from web.utils import create_new_draft_registation, get_paginated_data
+from web.utils import create_new_draft_registation, get_paginated_data, get_paginated_data_refresh
 
 
 def index(request):
@@ -55,6 +55,6 @@ class WizardIndex(LoginRequiredMixin, generic.TemplateView):
         """Insert the form into the context dict."""
         import asyncio
         kwargs.update({
-            'nodes':  asyncio.run(get_paginated_data(self.request.user.token, f'{OSF_API_URL}v2/users/me/nodes/?fields[nodes]=title&page[size]=100'))
+            'nodes':  asyncio.run(get_paginated_data_refresh(self.request.user, f'{OSF_API_URL}v2/users/me/nodes/?fields[nodes]=title&page[size]=100'))
         })
         return super().get_context_data(**kwargs)
