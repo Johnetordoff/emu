@@ -7,8 +7,7 @@ from my_secrets.secrets import OSF_OAUTH_CLIENT_ID
 from app.settings import OSF_REDIRECT_URI, OSF_CAS_URL, OSF_API_URL
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from web.utils import create_new_draft_registation, get_paginated_data, get_paginated_data_refresh
-
+from web.utils import create_new_draft_registation, get_paginated_data
 
 def index(request):
     return render(request, "index.html")
@@ -44,7 +43,7 @@ class WizardView(LoginRequiredMixin, generic.View):
             resp = create_new_draft_registation(OSF_API_URL, '5c252c8e0989e100220edb82', branched_from, request.user.token)
         draft_id = resp.json()['data']['id']
 
-        return redirect(f'https://staging.osf.io/registries/drafts/{draft_id}')
+        return redirect(f'{OSF_API_URL}registries/drafts/{draft_id}')
 
 
 class WizardIndex(LoginRequiredMixin, generic.TemplateView):
@@ -54,7 +53,9 @@ class WizardIndex(LoginRequiredMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         """Insert the form into the context dict."""
         import asyncio
+        user = self.request.user
+        # user.refresh_token()
         kwargs.update({
-            'nodes':  asyncio.run(get_paginated_data_refresh(self.request.user, f'{OSF_API_URL}v2/users/me/nodes/?fields[nodes]=title&page[size]=100'))
+            'nodes':  asyncio.run(get_paginated_data(user.token, f'{OSF_API_URL}v2/users/me/nodes/?fields[nodes]=title&page[size]=100'))
         })
         return super().get_context_data(**kwargs)

@@ -278,33 +278,54 @@
             <div aria-labelledby="analysis" class="tab-pane" id="analysis-choice" role="tabpanel">
                 <h5>Analysis Forms</h5>
                 <div aria-labelledby="analysis" class="tab-pane" id="analysis" role="tabpanel">
-                    <li>
-                        OSF Preregistration
-                        <blockquote>
-                            Use this form when making a detailed preregistration. It is appropriate for replication
-                            studies, original research, and for most fields of research
-                        </blockquote>
-                    </li>
-                    <li>
-                        Social Psychology Preregistration
-                        <blockquote>
-                            Use this form for making a detailed preregistration in social psychology.
-                        </blockquote>
-                    </li>
-                    <li>
-                        Replication Recipe Preregistration
-                        <blockquote>
-                            Use this form when you want to follow recommendations for what to include in a replication
-                            study, particularly in social or experimental psychology.
-                        </blockquote>
-                    </li>
-                    <li>
-                        Preregistration Template from AsPredicted.org
-                        <blockquote>
-                            Use this form to make a concise preregistration. It contains eight questions derived from
-                            content recommended by AsPredicted.org
-                        </blockquote>
-                    </li>
+                    <fieldset>
+                        <legend>Select one:</legend>
+                        <div class="field-row">
+                            <input class="form-check-input" type="radio">
+                            <label class="form-check-label" for="">
+                                <b>OSF Preregistration</b>
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <i>
+                                Use this form when making a detailed preregistration. It is appropriate for replication
+                                studies, original research, and for most fields of research
+                            </i>
+                        </div>
+                        <div class="field-row">
+                            <input class="form-check-input" type="radio">
+                            <label class="form-check-label" for="ongoing">
+                                <b>Social Psychology Preregistration</b>
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <i>Use this form for making a detailed preregistration in social psychology.</i>
+                        </div>
+                        <div class="field-row">
+                            <input class="form-check-input" type="radio">
+                            <label class="form-check-label" for="ongoing">
+                                <b>Replication Recipe Preregistration</b>
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <i>
+                                Use this form when you want to follow recommendations for what to include in a replication
+                                study, particularly in social or experimental psychology.
+                            </i>
+                        </div>
+                        <div class="field-row">
+                            <input class="form-check-input" type="radio">
+                            <label class="form-check-label" for="ongoing">
+                                <b>Preregistration Template from AsPredicted.org</b>
+                            </label>
+                        </div>
+                        <div class="field-row">
+                            <i>
+                                Use this form to make a concise preregistration. It contains eight questions derived from
+                                content recommended by AsPredicted.org
+                            </i>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
             <div aria-labelledby="basicprereg" class="tab-pane" id="basicprereg-choice" role="tabpanel">
@@ -340,6 +361,9 @@
         var schema;
         steps_etc = [];
 
+        function onMake(evt){
+            window.location = '{% url 'schema_wizard' %}?schema=' + evt.target.getAttribute('schema');;
+        }
         function onFinish(){
             window.location = '{% url 'schema_wizard' %}?schema=' + schema + '&branched_from=' + $('#project-archiver').find(":selected").val();
         }

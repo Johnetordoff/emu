@@ -69,7 +69,7 @@ class User(AbstractUser):
 
         return user
 
-    def get_token(self):
-        if not self.token:
-            self.refresh_token()
+    async def get_token(self):
+        #if not self.token:
+        #    await self.refresh_token()
         return self.token
