@@ -20,6 +20,7 @@ class OSFOauthView(generic.TemplateView):
             f"&redirect_uri={OSF_REDIRECT_URI}callback/"
             f"&scope=osf.full_write"
             f"&response_type=code"
+            f"&access_type=offline"
         )
 
 
@@ -54,7 +55,7 @@ class WizardIndex(LoginRequiredMixin, generic.TemplateView):
         """Insert the form into the context dict."""
         import asyncio
         user = self.request.user
-        # user.refresh_token()
+        user.get_refresh_token()
         kwargs.update({
             'nodes':  asyncio.run(get_paginated_data(user.token, f'{OSF_API_URL}v2/users/me/nodes/?fields[nodes]=title&page[size]=100'))
         })
