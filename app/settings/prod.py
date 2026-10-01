@@ -1,5 +1,7 @@
+import os
+
 from app.settings.defaults import *
 
 
-OSF_REDIRECT_URI = 'https://osf-emu.herokuapp.com/'
+OSF_REDIRECT_URI = os.getenv("OSF_REDIRECT_URI")
 DEBUG = False
